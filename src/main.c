@@ -19,6 +19,7 @@
 #include <errno.h>
 
 #include "list/list.h"
+#include "fixer/fixer.h"
 
 #if defined(WINDOWS)
     #include <windows.h>
@@ -46,8 +47,10 @@ int main(int argc, char* argv[])
     }
 
     //Repair screenshots
+    int ret = fix_files(file_list);
+    list_destroy(&file_list, NULL);
 
-    return 0;
+    return ret;
 }
 
 void usage(char* name)
@@ -112,7 +115,3 @@ _ERR:
     list_destroy(&ret, NULL);
     return NULL;
 }
-
-#if defined(WINDOWS)
-#elif defined(LINUX)
-#endif

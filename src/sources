@@ -1,3 +1,4 @@
 main.c
 bmp/bmp.c
 list/list.c
+fixer/fixer.c
