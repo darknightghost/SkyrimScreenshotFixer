@@ -69,39 +69,40 @@ list_t get_file_list(int argc, char* argv[])
     list_init(ret);
 
     for(int i = 1; i < argc; i++) {
+        char* path = argv[i];
 
         //Test if the file exists
         #if defined(WINDOWS)
-        DWORD attr = GetFileAttributes(argv[i]);
+        DWORD attr = GetFileAttributes(path);
 
         if(attr == INVALID_FILE_ATTRIBUTES) {
             errno = ENOENT;
-            fprintf(stderr, "\"%s\" does not exist.\n", argv[i]);
+            fprintf(stderr, "\"%s\" does not exist.\n", path);
             goto _ERR;
 
         } else if(attr | FILE_ATTRIBUTE_DIRECTORY) {
             errno = EISDIR;
-            fprintf(stderr, "\"%s\" is a directory.\n", argv[i]);
+            fprintf(stderr, "\"%s\" is a directory.\n", path);
             goto _ERR;
         }
 
         #elif defined(LINUX)
         struct stat st;
 
-        if(stat(argv[i], &st) != 0) {
+        if(stat(path, &st) != 0) {
             errno = ENOENT;
-            fprintf(stderr, "\"%s\" does not exist.\n", argv[i]);
+            fprintf(stderr, "\"%s\" does not exist.\n", path);
             goto _ERR;
 
         } else if(S_ISDIR(st.st_mode)) {
             errno = EISDIR;
-            fprintf(stderr, "\"%s\" is a directory.\n", argv[i]);
+            fprintf(stderr, "\"%s\" is a directory.\n", path);
             goto _ERR;
         }
 
         #endif
 
-        if(list_insert_after(&ret, NULL, argv[i]) == NULL) {
+        if(list_insert_after(&ret, NULL, path) == NULL) {
             errno = ENOMEM;
             perror("Failed to allocate memory!\n");
             goto _ERR;

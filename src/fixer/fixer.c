@@ -53,6 +53,8 @@ int fix_files(list_t file_list)
             continue;
         }
 
+        printf("\n");
+
         //Save file
         //Get backup file name
         char* backup_name = (char*)malloc(strlen(path) + 1 + 4);
@@ -68,6 +70,8 @@ int fix_files(list_t file_list)
         strcat(backup_name, ".bak");
 
         //Backup file
+        remove(backup_name);
+
         if(rename(path, backup_name) != 0) {
             fprintf(stderr, "Failed to save backup file \"%s\".", backup_name);
             free(backup_name);
@@ -90,13 +94,66 @@ int fix_files(list_t file_list)
         p_node = p_node->p_next;
     } while(p_node != file_list);
 
+    printf("%d file(s) in total. %d file(s) fixed.\n",
+           total_num, fixed_num);
 
     return 0;
 }
 
 int do_fix(pbmp_t* p_p_bmp)
 {
-    (void)(p_p_bmp);
+    pbmp_t p_src_bmp = *p_p_bmp;
+
+    //Check file format
+    if(p_src_bmp->data.info_header.compression != 0) {
+        fprintf(stderr, "Unsupported compression type!\n");
+        return -1;
+
+    } else {
+        printf("Compression type: Uncompressed.\n");
+    }
+
+    printf("Bitcount : %u.\n", p_src_bmp->data.info_header.bit_count);
+
+    if(p_src_bmp->data.info_header.bit_count != 24) {
+        fprintf(stderr, "Unsupported bit count!\n");
+        return -1;
+    }
+
+    u32 width = p_src_bmp->data.info_header.width;
+    u32 height = (u32)(p_src_bmp->data.info_header.height);
+
+    printf("Picture size : %u * %u.\n", width, height);
+
+    printf("File size : %u.\n"
+           "File size in bitmap header : %u.\n",
+           (u32)(p_src_bmp->size),
+           p_src_bmp->data.file_header.size);
+
+    //Check if the file needs repare
+    size_t data_size = width * 3;
+
+    if(data_size % 4 != 0) {
+        data_size += 4 - data_size % 4;
+    }
+
+    data_size *= height;
+    size_t file_size = data_size + sizeof(bitmap_file_header_t)
+                       + sizeof(bitmap_info_header_t);
+    printf("Correct file size : %u.\n", (u32)file_size);
+
+    if(p_src_bmp->data.file_header.size >= file_size) {
+        printf("The file does not need repair.\n");
+        return -1;
+
+    }
+
+    pbmp_t p_dest_bmp = new_bitmap(file_size);
+
+    if(p_dest_bmp == NULL) {
+        fprintf(stderr, "Failed to allocate memory.\n");
+        return - 1;
+    }
 
     return 0;
 }

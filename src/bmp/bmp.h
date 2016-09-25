@@ -21,6 +21,7 @@
 typedef	unsigned char	u8;
 typedef	unsigned short	u16;
 typedef	unsigned int	u32;
+typedef	signed int		s32;
 
 typedef struct {
     u16		type;
@@ -33,7 +34,7 @@ typedef struct {
 typedef struct {
     u32		size;
     u32		width;
-    u32		height;
+    s32		height;
     u16		planes;
     u16		bit_count;
     u32		compression;

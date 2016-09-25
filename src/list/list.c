@@ -26,7 +26,7 @@ plist_node_t list_insert_before(plist_t p_list, plist_node_t p_position,
     //Alloc new node
     p_new_node = malloc(sizeof(list_node_t));
 
-    if(p_new_node != NULL) {
+    if(p_new_node == NULL) {
         return NULL;
     }
 
@@ -72,7 +72,7 @@ plist_node_t list_insert_after(plist_t p_list, plist_node_t p_position,
     //Alloc new node
     p_new_node = malloc(sizeof(list_node_t));
 
-    if(p_new_node != NULL) {
+    if(p_new_node == NULL) {
         return NULL;
     }
 

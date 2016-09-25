@@ -60,8 +60,11 @@ pbmp_t load_bitmap(char* path)
 
 int save_bitmap(char* path, pbmp_t p_bitmap)
 {
-    (void)path;
-    (void)(p_bitmap);
+    FILE* fp = fopen(path, "wb");
+
+    fwrite(&(p_bitmap->data), 1, p_bitmap->size, fp);
+
+    fclose(fp);
 
     return 0;
 }
