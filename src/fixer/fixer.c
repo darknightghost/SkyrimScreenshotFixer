@@ -148,12 +148,36 @@ int do_fix(pbmp_t* p_p_bmp)
 
     }
 
+    //Fix the bitmap
     pbmp_t p_dest_bmp = new_bitmap(file_size);
 
     if(p_dest_bmp == NULL) {
         fprintf(stderr, "Failed to allocate memory.\n");
         return - 1;
     }
+
+    memcpy(&(p_dest_bmp->data), &(p_src_bmp->data), sizeof(bitmap_file_header_t)
+           + sizeof(bitmap_info_header_t));
+
+    size_t src_line_sz = width * 3;
+    size_t dest_line_sz = src_line_sz;
+
+    if(dest_line_sz % 4 != 0) {
+        dest_line_sz += 4 - dest_line_sz % 4;
+    }
+
+    u8* p_src = p_src_bmp->data.data;
+    u8* p_dest = p_dest_bmp->data.data;
+
+    for(int i = 0; i < height; i++) {
+        memcpy(p_dest, p_src, src_line_sz);
+        p_src += src_line_sz;
+        p_dest += dest_line_sz;
+    }
+
+    release_bitmap(p_src_bmp);
+
+    *p_p_bmp = p_dest_bmp;
 
     return 0;
 }

@@ -71,7 +71,9 @@ int save_bitmap(char* path, pbmp_t p_bitmap)
 
 pbmp_t new_bitmap(size_t size)
 {
-    return (pbmp_t)malloc(size);
+    pbmp_t p_ret = (pbmp_t)malloc(size);
+    p_ret->size = size;
+    return p_ret;
 }
 
 void release_bitmap(pbmp_t p_bitmap)
