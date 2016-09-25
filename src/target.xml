@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?><target name="SkyrimScreenshotFixer configuration" type="virtual">
-    <output name=""/>
-    <outdir path=""/>
-    <middir path=""/>
+<?xml version="1.0" encoding="utf-8"?><target name="SkyrimScreenshotFixer" type="build">
+    <output name="skyrim-screenshot-fixer"/>
+    <outdir path="../bin/$(ARCH)"/>
+    <middir path="../obj/$(ARCH)"/>
     <introduction>
-      SkyrimScreenshotFixer configuration tool.
+        SkyrimScreenshotFixer
     </introduction>
-    <archs actived="Linux">
+    <archs>
         <arch name="Linux">
             <PREV></PREV>
             <ARCHDEF>-DLINUX</ARCHDEF>
@@ -44,8 +44,8 @@
     <dependencies>
     </dependencies>
     <sub-targets>
-        <target enable="true" path="src/target.xml"/>
     </sub-targets>
     <options>
+            <option enable="true" name="Build with symbols." target="CFLAGS|ASFLAGS" type="checkbox" value="-g"/>
     </options>
 </target>
