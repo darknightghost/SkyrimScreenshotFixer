@@ -21,7 +21,7 @@
             <LD>gcc</LD>
             <LDFLAGS></LDFLAGS>
             <LDRULE>$(LD) $(LDFLAGS) -o $@ $^</LDRULE>
-            <AFTER>cp $(LINKED) $(OUTDIR)/$(OUTPUT)</AFTER>
+            <AFTER></AFTER>
         </arch>
         <arch name="Windows">
             <PREV></PREV>
@@ -38,7 +38,7 @@
             <LD>i686-w64-mingw32-gcc</LD>
             <LDFLAGS></LDFLAGS>
             <LDRULE>$(LD) $(LDFLAGS) -o $@ $^</LDRULE>
-            <AFTER>cp $(LINKED) $(OUTDIR)/$(OUTPUT)</AFTER>
+            <AFTER></AFTER>
         </arch>
     </archs>
     <dependencies>
