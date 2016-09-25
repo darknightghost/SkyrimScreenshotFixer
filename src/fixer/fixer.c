@@ -158,6 +158,7 @@ int do_fix(pbmp_t* p_p_bmp)
 
     memcpy(&(p_dest_bmp->data), &(p_src_bmp->data), sizeof(bitmap_file_header_t)
            + sizeof(bitmap_info_header_t));
+    p_dest_bmp->data.file_header.size = file_size;
 
     size_t src_line_sz = width * 3;
     size_t dest_line_sz = src_line_sz;
