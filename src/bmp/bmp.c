@@ -71,7 +71,7 @@ int save_bitmap(char* path, pbmp_t p_bitmap)
 
 pbmp_t new_bitmap(size_t size)
 {
-    pbmp_t p_ret = (pbmp_t)malloc(size);
+    pbmp_t p_ret = (pbmp_t)malloc(size + sizeof(size_t));
     p_ret->size = size;
     p_ret->data.file_header.size = size;
     return p_ret;
